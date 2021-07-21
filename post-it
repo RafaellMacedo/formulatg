@@ -1,0 +1,27 @@
+Formula TG
+
+Criar comandos de ações no projeto
+
+Exibir Carros
+Adicionar Carros
+Excluir Carros
+Definir Posições
+Iniciar Corrida
+Ultrapassar
+Finalizar Corrida
+Exibir Histórico da Corrida
+
+Se atender as regras
+
+Primeiro não Ultrapassar
+Não finalizar corrida sem ter iniciado corrida
+Não iniciar corrida tendo apenas um carro
+Não iniciar corrida sem os carros ter posições definidas
+Se já estiver iniciado corrida, não deixar iniciar outra
+
+
+Uma melhoria futura
+
+Fazer corrida de treinamento informando o tempo da volta
+Uma melhoria seria informar a quantidade de volta e o tempo em cada volta, depois somar 
+e tirar a média do tempo do treinamento para definir as posições.
