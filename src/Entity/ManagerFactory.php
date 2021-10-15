@@ -8,7 +8,7 @@ use Doctrine\ORM\Tools\Setup;
 
 class ManagerFactory {
 
-    /*
+    /**
      * @return EntityManagerInterface
      * @throws \Doctrine\ORM\ORMException
      * */
@@ -20,8 +20,8 @@ class ManagerFactory {
         );
 
         $connection = [
-            'driver' => 'pdo_mysql',
-            'path' => $rootDir.'/var/data/dabase'
+            'driver' => 'pdo_sqlite',
+            'path' => $rootDir.'/var/data/banco.sqlite'
         ];
 
         return EntityManager::create($connection, $config);

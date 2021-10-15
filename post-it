@@ -64,3 +64,12 @@ Uma melhoria futura
 Fazer corrida de treinamento informando o tempo da volta
 Uma melhoria seria informar a quantidade de volta e o tempo em cada volta, depois somar 
 e tirar a média do tempo do treinamento para definir as posições.
+
+Comando Docker
+
+docker-compose up -d
+
+
+Comando doctrine
+
+vendor/bin/doctrine orm:schema-tool:create
