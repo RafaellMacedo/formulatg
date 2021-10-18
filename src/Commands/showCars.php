@@ -1,9 +1,9 @@
 <?php
 
-use Formulatg\Entity\Car;
-use Formulatg\Entity\ManagerFactory;
+use Formulatg\Entities\Car;
+use Formulatg\Entities\ManagerFactory;
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 $managerFactory = new ManagerFactory();
 $entityManager = $managerFactory->getManager();
@@ -17,8 +17,3 @@ foreach ($carList as $key => $car) {
     echo "Piloto: {$car->getNameDriver()}\n\n";
 }
 
-$pilot = $carRepository->findOneBy([
-    'name_driver' => 'Rafael'
-]);
-
-echo "Busca de piloto {$pilot->getNameDriver()}\n";

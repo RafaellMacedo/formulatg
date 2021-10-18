@@ -1,6 +1,6 @@
 <?php
 
-namespace Formulatg\Entity;
+namespace Formulatg\Entities;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;

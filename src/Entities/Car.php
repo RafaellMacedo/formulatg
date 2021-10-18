@@ -1,10 +1,12 @@
 <?php
 
-namespace Formulatg\Entity;
+namespace Formulatg\Entities;
 
 /**
  * @Entity
- * @Table(name="cars")
+ * @Table(name="cars",
+ *     uniqueConstraints={ @UniqueConstraint(name="name_driver_unique", columns={"name_driver"}) }
+ * )
  */
 final class Car {
 
@@ -15,20 +17,27 @@ final class Car {
      */
     protected int $id;
 
-    /** @column(type="string") */
+    /** @Column(type="string") */
     public string $name_driver;
 
-    /** @column(type="string") */
+    /** @Column(type="string") */
     public string $color;
 
-    /** @column(type="integer") */
+    /** @Column(type="integer") */
     public int $number;
 
-    /** @column(type="integer", nullable=true) */
+    /** @Column(type="integer", nullable=true) */
     public int $position;
 
-    /** @column(type="integer") */
+    /** @Column(type="integer") */
     public int $status;
+
+    /**
+     * @return string
+     */
+    public function getId(): string {
+        return $this->id;
+    }
 
     /**
      * @return string
@@ -41,7 +50,7 @@ final class Car {
      * @param string $name_driver
      */
     public function setNameDriver(string $name_driver) {
-        $this->name_driver = $name_driver;
+        $this->nameDriver = $name_driver;
     }
 
     /**

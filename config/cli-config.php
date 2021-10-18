@@ -1,6 +1,6 @@
 <?php
 
-use Formulatg\Entity\ManagerFactory;
+use Formulatg\Entities\ManagerFactory;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

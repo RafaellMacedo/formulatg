@@ -27,7 +27,8 @@ Atributos da classe Carro
 
 Excluir Carros
 
-Para excluir um carro, só pode ser excluído se não houver corrida iniciada e se o carro existir no banco de dados.
+Para excluir um carro, só pode ser excluído se não houver corrida iniciada e
+se o carro existir no banco de dados.
 
 Definir Posições
 
