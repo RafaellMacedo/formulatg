@@ -73,3 +73,5 @@ docker-compose up -d
 Comando doctrine
 
 vendor/bin/doctrine orm:schema-tool:create
+
+php commans\new-car.php
