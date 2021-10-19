@@ -4,11 +4,10 @@ namespace Formulatg\Entities;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @Entity
- * * @Table(name="racing")
+ * @Table(name="racing")
 */
 final class Racing {
 
