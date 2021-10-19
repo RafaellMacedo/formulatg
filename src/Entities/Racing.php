@@ -2,19 +2,22 @@
 
 namespace Formulatg\Entities;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @Entity
+ * * @Table(name="racing")
 */
 final class Racing {
 
     /**
      * @Id
      * @GeneratedValue
-     * $Column(type="integer")
+     * @Column(type="integer")
     */
-    private Integer $id;
+    private int $id;
 
     /**
      * @Column(type="boolean")
@@ -27,30 +30,36 @@ final class Racing {
     public String $name;
 
     /**
-     * @return String
-     */
+     * @OneToMany(targetEntity="Car", mappedBy="cars")
+    */
+    private ArrayCollection $cars;
+
+    public function __construct() {
+        $this->cars = new ArrayCollection();
+    }
+
     public function getName(): string {
         return $this->name;
     }
 
-    /**
-     * @param String $name
-     */
     public function setName(string $name): void {
         $this->name = $name;
     }
 
-    /**
-     * @return bool
-     */
     public function isStatus(): bool {
         return $this->status;
     }
 
-    /**
-     * @param bool $status
-     */
     public function setStatus(bool $status): void {
         $this->status = $status;
+    }
+
+    public function addCar(Car $car): void {
+        $this->cars->add($car);
+        $car->racing->setRacing($this);
+    }
+
+    public function getCars(): Collection {
+        return $this->cars;
     }
 }

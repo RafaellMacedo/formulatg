@@ -32,7 +32,8 @@ se o carro existir no banco de dados.
 
 Definir Posições
 
-- Criar um endpoint que receba o nome do piloto ou o id (ainda definir), em seguida receber um valor inteiro que será a posição do carro na largada.
+- Criar um endpoint que receba o nome do piloto ou o id (ainda definir),
+em seguida receber um valor inteiro que será a posição do carro na largada.
 - Verificar se o carro informado existe no banco de dados, antes de gravar a posição.
 
 Iniciar Corrida
@@ -74,5 +75,10 @@ docker-compose up -d
 Comando doctrine
 
 vendor/bin/doctrine orm:schema-tool:create
+
+vendor/bin/doctrine orm:info
+
+Atualizar schema
+vendor/bin/doctrine orm:schema-tool:update --force
 
 php commans\new-car.php

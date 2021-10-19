@@ -15,7 +15,7 @@ class ManagerFactory {
     public function getManager(): EntityManagerInterface {
         $rootDir = __DIR__.'/../..';
         $config = Setup::createAnnotationMetadataConfiguration(
-            [$rootDir.'/src'],
+            [$rootDir.'/src/Entities'],
             true
         );
 

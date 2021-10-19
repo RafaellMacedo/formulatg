@@ -20,7 +20,11 @@ class CarController {
         $carList = $this->repository->findAll();
 
         foreach ($carList as $key => $car) {
-            echo "Piloto: {$car->getNameDriver()}\n\n";
+            echo "Id: {$car->getId()}\n" .
+                "Piloto: {$car->getNameDriver()}\n" .
+                "Cor: {$car->getColor()}\n" .
+                "Número: {$car->getNumber()}\n" .
+                "Posição: {$car->getPosition()}\n\n";
         }
     }
 
