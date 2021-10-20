@@ -32,10 +32,10 @@ final class Car {
     /** @Column(type="integer") */
     public int $status;
 
-    /**
-     * @ManyToOne(targetEntity="Racing")
-    */
-    public Racing $racing;
+//    /**
+//     * @ManyToOne(targetEntity="Racing")
+//    */
+//    public Racing $racing;
 
     public function getId(): int {
         return $this->id;
@@ -77,15 +77,15 @@ final class Car {
         $this->status = $status;
     }
 
-    public function getStatus(): int {
-        return $this->status;
+    public function getStatus(): string {
+        return $this->status ? 'Ativo' : 'Inativo';
     }
 
-    public function setRacing(Racing $racing): void {
-        $this->racing = $racing;
-    }
-
-    public function getRacing(): Racing {
-        return $this->racing;
-    }
+//    public function setRacing(Racing $racing): void {
+//        $this->racing = $racing;
+//    }
+//
+//    public function getRacing(): Racing {
+//        return $this->racing;
+//    }
 }

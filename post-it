@@ -85,6 +85,8 @@ php commans\new-car.php
 
 Rodar a migration
 
+vendor/bin/doctrine-migrations migrations:diff
+
 vendor/bin/doctrine-migrations migrations:migrate
 
 migrations:execute --up 'Formulatg\\Migrations\\Version20211019172925'
