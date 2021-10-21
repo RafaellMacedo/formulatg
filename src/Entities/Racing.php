@@ -3,7 +3,6 @@
 namespace Formulatg\Entities;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Formulatg\Util\RacingEnum;
 
 /**
@@ -32,15 +31,15 @@ final class Racing {
     public function getId(): int {
         return $this->id;
     }
+//, cascade={"remove", "persist"}
+    /**
+     * @ManyToMany(targetEntity="Car", inversedBy="racing")
+    */
+    private $cars;
 
-//    /**
-//     * @OneToMany(targetEntity="Car", mappedBy="cars")
-//    */
-//    private ArrayCollection $cars;
-
-//    public function __construct() {
-//        $this->cars = new ArrayCollection();
-//    }
+    public function __construct() {
+        $this->cars = new ArrayCollection();
+    }
 
     public function getName(): string {
         return $this->name;
@@ -58,12 +57,20 @@ final class Racing {
         $this->status = $status;
     }
 
-//    public function addCar(Car $car): void {
-//        $this->cars->add($car);
-//        $car->racing->setRacing($this);
-//    }
-//
-//    public function getCars(): Collection {
-//        return $this->cars;
-//    }
+    public function addCar(Car $car): void {
+        $this->cars->add($car);
+        $car->addRacing($this);
+    }
+
+    public function deleteCar(Car $car): void {
+        $this->cars->removeElement($car);
+        $car->deleteRacing($this);
+    }
+
+    /**
+     * @return Car[]
+    */
+    public function getRacingCar() {
+        return $this->cars;
+    }
 }

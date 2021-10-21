@@ -5,17 +5,28 @@ namespace Formulatg\Repositories;
 use Doctrine\ORM\EntityRepository;
 use Formulatg\Entities\ManagerFactory;
 use Formulatg\Entities\Racing;
+use Formulatg\Util\Message;
 use Formulatg\Util\RacingEnum;
 
 class RacingRepository {
 
     protected EntityRepository $racingRepository;
 
-    /** @throws Exception */
+    /**
+     * @var Message
+    */
+    private $message;
+
+    /**
+     * @throws Exception
+     * @var EntityRepository $racingRepository
+     */
     public function __construct() {
         $managerFactory = new ManagerFactory();
         $this->entityManager = $managerFactory->getManager();
         $this->racingRepository = $this->entityManager->getRepository(Racing::class);
+
+        $this->message = new Message();
     }
 
     /**
@@ -25,13 +36,35 @@ class RacingRepository {
         return $this->racingRepository->findAll();
     }
 
-    public function beginRacing($nameRacing): string {
+    public function findBy(String $name): Racing {
+        return $this->racingRepository->findOneBy([
+            'name' => $name
+        ]);
+    }
+
+    public function showRacingAll(): void {
+        $racingList = $this->findAll();
+
+        if(!$racingList) {
+            $this->message->racingEmpty();
+            exit;
+        }
+
+        foreach ($racingList as $key => $racing) {
+            echo "\nId: {$racing->getId()}\n" .
+                "Corrida: {$racing->getName()}\n".
+                "Status: {$racing->isStatus()}\n\n";
+        }
+    }
+
+    public function beginRacing($nameRacing): void {
         $findRacingBegin = [
             'status' => RacingEnum::INICIADO
         ];
 
         if($racing = $this->racingRepository->findOneBy($findRacingBegin)){
-            return "\nJá existe uma corrida iniciada, finalize {$racing->getName()}\n\n";
+            echo "\nJá existe uma corrida iniciada, finalize {$racing->getName()}\n\n";
+            exit;
         }
 
         $racing = $this->racingRepository->findOneBy([
@@ -42,11 +75,11 @@ class RacingRepository {
             $racing->setStatus(RacingEnum::INICIADO);
             $this->entityManager->persist($racing);
             $this->entityManager->flush();
-
-            return "\nCorrida {$nameRacing} Iniciada\n\n";
+            echo "\nCorrida {$nameRacing} Iniciada\n\n";
+            exit;
         }
 
-        return "\nCorrida {$nameRacing} Não Encontrada\n\n";
+        echo "\nCorrida {$nameRacing} Não Encontrada\n\n";
     }
 
     public function pauseRacing($nameRacing): void {
@@ -58,6 +91,8 @@ class RacingRepository {
             $racing->setStatus(RacingEnum::PAUSADO);
             $this->entityManager->persist($racing);
             $this->entityManager->flush();
+
+            echo "\nCorrida pausada!\n\n";
         }
     }
 
@@ -78,5 +113,7 @@ class RacingRepository {
     public function create(Racing $racing): void {
         $this->entityManager->persist($racing);
         $this->entityManager->flush();
+
+        echo "\nCorrida criada!\n\n";
     }
 }

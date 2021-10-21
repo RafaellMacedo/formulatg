@@ -2,9 +2,6 @@
 
 namespace Formulatg\Commands;
 
-use Formulatg\Controllers\CarController;
-use Formulatg\Controllers\RacingController;
-
 class listCommands {
 
     public function listCommands(){
@@ -18,12 +15,31 @@ class listCommands {
     }
 
     public function commandCar(): void{
-        $carController = new CarController();
-        echo $carController->command();
+        echo "\n> cadastrarCarro <nome_piloto> <cor> <numero> <status OPCIONAL>\n\n" .
+            "\t**Lista de informações**\n\n" .
+            "\tnome do piloto usando aspas duplas \"\"\n" .
+            "\tcor do carro\n" .
+            "\tnúmero\n" .
+            "\tStatus do Carro Ativo ou Inativo (Opcional)\n\n" .
+            "\t***\n\n" .
+            "\n> mostrarCarro\n";
     }
 
     public function commandRacing(): void {
-        $racingController = new RacingController();
-        echo $racingController->command();
+        echo "\n> corrida <comando>\n\n" .
+                "\t**Lista de comandos da Corrida**\n\n".
+                "\tmostrar - {Mostra todas as Corrida}\n" .
+                "\tcriar - {Criar Corrida}\n" .
+                "\taddCarro - {Cadastrar Carro na Corrida}\n" .
+                "\tremoverCarro - {Remover Carro da Corrida}\n" .
+                "\tposicao - {Definir Posição do Carro}\n\n" .
+                "\t***\n\n" .
+            "> iniciarCorrida \n" .
+            "\n" .
+            "> pausarCorrida \n" .
+            "\n" .
+            "> ultrapassar\n" .
+            "\n" .
+            "> finalizarCorrida\n\n";
     }
 }

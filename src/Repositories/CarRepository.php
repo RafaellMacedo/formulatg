@@ -22,7 +22,26 @@ class CarRepository {
      * @return array
      */
     public function findAll(): array {
-        return $this->carRepository->findBy([], ['position' => 'ASC']);
+        return $this->carRepository->findAll();
+    }
+
+    public function findBy(String $nameDriver) {
+        return $this->carRepository->findOneBy([
+            'name_driver' => $nameDriver
+        ]);
+    }
+
+    public function showCars(): void {
+        $carList = $this->findAll();
+
+        foreach ($carList as $key => $car) {
+            echo "\nId: {$car->getId()}\n" .
+                "Piloto: {$car->getNameDriver()}\n" .
+                "Cor: {$car->getColor()}\n" .
+                "Número: {$car->getNumber()}\n" .
+                "Status: {$car->getStatus()}\n" .
+                "Posição: {$car->getPosition()}\n\n";
+        }
     }
 
     /**

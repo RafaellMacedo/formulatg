@@ -2,6 +2,7 @@
 
 use Formulatg\Commands\listCommands;
 use Formulatg\Controllers\CarController;
+use Formulatg\Controllers\RacingCarController;
 use Formulatg\Controllers\RacingController;
 use Formulatg\Entities\ManagerFactory;
 
@@ -26,14 +27,32 @@ try {
         case 'corrida':
             $input = $argv[2];
 
-            if($input){
+            if($input) {
                 $controller = new RacingController();
-                    $controller->$input($argv);
+
+                $racingCarInput = [
+                    'mostrarPilotos',
+                    'addCarro',
+                    'removerCarro',
+                    'posicao'
+                ];
+
+                if(in_array($input, $racingCarInput)) {
+                    if(!isset($argv[3])){
+                        echo "\nInforme o nome da corrida que deseja adicionar o carro\n\n";
+                        break;
+                    }
+
+                    $controller = new RacingCarController();
+                }
+
+                $controller->$input($argv);
                 break;
             }
 
             echo "\nInforme a ação que deseja fazer: \n\n".
                 "mostrar - {Mostra todas as Corrida}\n" .
+                "mostrarPilotos <nome da corrida \"\"> {Mostra todas os pilotos da corrida}\n" .
                 "criar - {Criar Corrida}\n" .
                 "addCarro - {Cadastrar Carro na Corrida}\n" .
                 "removerCarro - {Remover Carro da Corrida}\n" .

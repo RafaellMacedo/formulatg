@@ -2,6 +2,9 @@
 
 namespace Formulatg\Entities;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use phpDocumentor\Reflection\Types\Collection;
+
 /**
  * @Entity
  * @Table(name="cars",
@@ -32,10 +35,14 @@ final class Car {
     /** @Column(type="integer") */
     public int $status;
 
-//    /**
-//     * @ManyToOne(targetEntity="Racing")
-//    */
-//    public Racing $racing;
+    /**
+     * @ManyToMany(targetEntity="Racing", mappedBy="cars")
+    */
+    private $racing;
+
+    public function __construct() {
+        $this->racing = new ArrayCollection();
+    }
 
     public function getId(): int {
         return $this->id;
@@ -81,11 +88,15 @@ final class Car {
         return $this->status ? 'Ativo' : 'Inativo';
     }
 
-//    public function setRacing(Racing $racing): void {
-//        $this->racing = $racing;
-//    }
-//
-//    public function getRacing(): Racing {
-//        return $this->racing;
-//    }
+    public function addRacing(Racing $racing): void {
+        $this->racing->add($racing);
+    }
+
+    public function deleteRacing(Racing $racing): void {
+        $this->racing->removeElement($racing);
+    }
+
+    public function getRacing(): Collection {
+        return $this->racing;
+    }
 }

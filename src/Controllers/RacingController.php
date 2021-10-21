@@ -4,6 +4,7 @@ namespace Formulatg\Controllers;
 
 use Formulatg\Entities\Racing;
 use Formulatg\Repositories\RacingRepository;
+use Formulatg\Util\Message;
 
 class RacingController {
 
@@ -12,68 +13,45 @@ class RacingController {
      */
     private $repository;
 
+    /**
+     * @var Message
+    */
+    private $message;
+
     public function __construct() {
         $this->repository = new RacingRepository();
+        $this->message = new Message();
     }
 
-    public function mostrar(){
-        $racingList = $this->repository->findAll();
-
-        if(!$racingList) {
-            echo "\nNenhuma corrida criada\n\n";
-        }
-
-        foreach ($racingList as $key => $racing) {
-            echo "\nId: {$racing->getId()}\n" .
-                "Corrida: {$racing->getName()}\n".
-                "Status: {$racing->isStatus()}\n\n";
-        }
+    public function mostrar(): void {
+        $this->repository->showRacingAll();
     }
 
-    public function criar($argv){
+    public function criar($argv): void {
         if(count($argv) < 4){
-            echo "\nInforme o nome da Corrida\n\n";
-            return;
+            $this->message->racingNameNotFound();
+            exit;
         }
 
         $racing = $this->repository->fromArgvToFields($argv);
         $this->repository->create($racing);
-
-        echo "\nCorrida criada!\n\n";
     }
 
-    public function iniciarCorrida($nameRacing){
+    public function iniciarCorrida($nameRacing): void {
         if($nameRacing == ""){
-            echo "\nInforme o nome da corrida\n\n";
-            return false;
+            $this->message->racingNameNotFound();
+            exit;
         }
-        echo $this->repository->beginRacing($nameRacing);
+
+        $this->repository->beginRacing($nameRacing);
     }
 
-
-    public function pausarCorrida($nameRacing){
+    public function pausarCorrida($nameRacing): void {
         if($nameRacing == ""){
-            echo "\nInforme o nome da corrida\n\n";
-            return false;
+            $this->message->racingNameNotFound();
+            exit;
         }
-        echo $this->repository->pauseRacing($nameRacing);
-    }
 
-    public function command(): string {
-        return "\n> corrida <comando>\n\n" .
-                "\t**Lista de comandos da Corrida**\n\n".
-                "\tmostrar - {Mostra todas as Corrida}\n" .
-                "\tcriar - {Criar Corrida}\n" .
-                "\taddCarro - {Cadastrar Carro na Corrida}\n" .
-                "\tremoverCarro - {Remover Carro da Corrida}\n" .
-                "\tposicao - {Definir Posição do Carro}\n\n" .
-                "\t***\n\n" .
-            "> iniciarCorrida \n" .
-            "\n" .
-            "> pausarCorrida \n" .
-            "\n" .
-            "> ultrapassar\n" .
-            "\n" .
-            "> finalizarCorrida\n\n";
+        $this->repository->pauseRacing($nameRacing);
     }
 }
