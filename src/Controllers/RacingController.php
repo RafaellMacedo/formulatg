@@ -11,7 +11,7 @@ class RacingController {
     /**
      * @var RacingRepository
      */
-    private $repository;
+    private $racingRepository;
 
     /**
      * @var Message
@@ -19,39 +19,48 @@ class RacingController {
     private $message;
 
     public function __construct() {
-        $this->repository = new RacingRepository();
+        $this->racingRepository = new RacingRepository();
         $this->message = new Message();
     }
 
     public function mostrar(): void {
-        $this->repository->showRacingAll();
+        $this->racingRepository->showRacingAll();
     }
 
     public function criar($argv): void {
         if(count($argv) < 4){
-            $this->message->racingNameNotFound();
+            $this->message->infoRacingName();
             exit;
         }
 
-        $racing = $this->repository->fromArgvToFields($argv);
-        $this->repository->create($racing);
+        $racing = $this->racingRepository->fromArgvToFields($argv);
+        $this->racingRepository->create($racing);
     }
 
-    public function iniciarCorrida($nameRacing): void {
+    public function start($nameRacing): void {
         if($nameRacing == ""){
-            $this->message->racingNameNotFound();
+            $this->message->infoRacingName();
             exit;
         }
 
-        $this->repository->beginRacing($nameRacing);
+        $this->racingRepository->startRacing($nameRacing);
     }
 
-    public function pausarCorrida($nameRacing): void {
+    public function pause(String $nameRacing): void {
         if($nameRacing == ""){
-            $this->message->racingNameNotFound();
+            $this->message->infoRacingName();
             exit;
         }
 
-        $this->repository->pauseRacing($nameRacing);
+        $this->racingRepository->pauseRacing($nameRacing);
+    }
+
+    public function finish(String $racingName): void {
+        if($racingName == "") {
+            $this->message->infoRacingName();
+            exit;
+        }
+
+        $this->racingRepository->finish($racingName);
     }
 }

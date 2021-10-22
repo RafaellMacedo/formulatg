@@ -15,7 +15,7 @@ class HistoryRacingController {
         $this->historyRacingRepository = new HistoryRacingRepository();
     }
 
-    public function ultrapassar(Array $fields): void {
+    public function exceed(Array $fields): void {
         $racingName = $fields[2];
 
         if(count($fields) < 5) {
@@ -24,5 +24,9 @@ class HistoryRacingController {
         }
 
         $this->historyRacingRepository->createHistory($racingName, $fields[3], $fields[4]);
+    }
+
+    public function showHistoric(String $racingName): void {
+        $this->historyRacingRepository->show($racingName);
     }
 }

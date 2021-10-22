@@ -4,10 +4,10 @@ namespace Formulatg\Util;
 
 class RacingEnum {
 
-    public const CRIADO = 0;
-    public const INICIADO = 1;
-    public const PAUSADO = 2;
-    public const FINALIZADO = 3;
+    public const CREATED = 0;
+    public const STARTED = 1;
+    public const PAUSED = 2;
+    public const FINISHED = 3;
 
     public const STATUS = [
         "CRIADO",

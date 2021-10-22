@@ -49,7 +49,8 @@ class RacingCarRepository {
         $racing = $this->findRacing($racingName);
 
         echo "\nId: {$racing->getId()}\n" .
-            "Nome: {$racing->getName()}\n\n";
+            "Nome: {$racing->getName()}\n" .
+            "Status: {$racing->isStatus()}\n\n";
 
         $cars = $racing->getRacingCar();
 

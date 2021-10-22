@@ -7,20 +7,26 @@ use Formulatg\Entities\Car;
 use Formulatg\Entities\HistoryRacing;
 use Formulatg\Entities\ManagerFactory;
 use Formulatg\Entities\Racing;
+use Formulatg\Util\Message;
 
 class HistoryRacingRepository {
 
     protected EntityRepository $historyRacingRepository;
 
+    /**
+     * @var Message
+    */
+    private $message;
+
     public function __construct() {
         $managerFactory = new ManagerFactory();
         $this->entityManager = $managerFactory->getManager();
         $this->historyRacingRepository = $this->entityManager->getRepository(HistoryRacing::class);
+        $this->message = new Message();
     }
 
     public function show(): void {
         $listHistoryRacing =  $this->historyRacingRepository->findAll();
-
         $carRespository = $this->entityManager->getRepository(Car::class);
 
         /**
@@ -32,12 +38,11 @@ class HistoryRacingRepository {
             $carExceed = $carRespository->find($historyRacing->getCarExceed());
             $carOverpast = $carRespository->find($historyRacing->getCarOverpast());
 
-            echo "\nO Piloto {$carExceed->getNameDriver()} " .
-                "estava na posição {$historyRacing->getPositionCarExceed()} \n" .
-                "\tultrapassou o piloto -> {$carOverpast->getNameDriver()} " .
-                "que estava na posição " .
-                "{$historyRacing->getPositionCarOverpast()} \n\n";
-
+            echo "\nPiloto {$carExceed->getNameDriver()} " .
+                "posição {$historyRacing->getPositionCarOverpast()}\n" .
+                "Ultrapassou o piloto {$carOverpast->getNameDriver()} " .
+                "da posição " .
+                "{$historyRacing->getPositionCarExceed()} \n\n";
         }
     }
 
@@ -69,16 +74,14 @@ class HistoryRacingRepository {
         $racing = $this->findRacing($racingName);
 
         if(!$racing->isStarted()){
-            echo "\nCorrida não iniciada!\n\n";
+            $this->message->racingNotStarted();
             exit;
         }
 
         $carExceed = $this->findByNameDriver($carNameExceed);
-//echo "\nExceed {$carExceed->getPosition()}\n\n";
         $positionOverpast = $carExceed->getPosition() - 1;
-
         $carOverpast = $this->findByNameDriver($carNameOverpast);
-//echo "\n overpast {$carOverpast->getPosition()}\n\n"; exit;
+
         if($this->isInvalidExceed($carExceed, $carOverpast)) {
             echo "\nPiloto {$carExceed->getNameDriver()} " .
                 "não pode ultrapassar o piloto {$carOverpast->getNameDriver()}\n\n";
@@ -89,8 +92,8 @@ class HistoryRacingRepository {
         $historyRacing->setRacing($racing->getId());
         $historyRacing->setCarExceed($carExceed->getId());
         $historyRacing->setCarOverpast($carOverpast->getId());
-        $historyRacing->setPositionCarExceed($carOverpast->getPosition());
-        $historyRacing->setPositionCarOverpast($carExceed->getPosition());
+        $historyRacing->setPositionCarExceed($carExceed->getPosition());
+        $historyRacing->setPositionCarOverpast($carOverpast->getPosition());
         $this->entityManager->persist($historyRacing);
 
         $carOverpast->setPosition($carExceed->getPosition());

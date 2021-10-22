@@ -16,11 +16,19 @@ class Message {
         echo "\nPiloto cadastrado!\n\n";
     }
 
+    public function infoPilotPosition(): void {
+        echo "\nInforme a posição do carro\n\n";
+    }
+
     public function racingEmpty(): void {
         echo "\nNenhuma corrida criada\n\n";
     }
 
-    public function racingNameNotFound(): void {
+    public function infoRacingName(): void {
         echo "\nInforme o nome da Corrida\n\n";
+    }
+
+    public function racingNotStarted(): void {
+        echo "\nCorrida não iniciada!\n\n";
     }
 }

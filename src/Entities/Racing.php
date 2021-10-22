@@ -68,11 +68,15 @@ final class Racing {
         $car->deleteRacing($this);
     }
 
-    public function getRacingCar(): ArrayCollection {
+    public function getRacingCar() {
         return $this->cars;
     }
 
     public function isStarted(): bool {
-        return $this->status == RacingEnum::INICIADO;
+        return $this->status == RacingEnum::STARTED;
+    }
+
+    public function isFinished(): bool {
+        return $this->status == RacingEnum::FINISHED;
     }
 }
