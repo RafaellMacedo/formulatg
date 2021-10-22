@@ -11,7 +11,6 @@ class CarRepository {
 
     protected EntityRepository $carRepository;
 
-    /** @throws Exception */
     public function __construct() {
         $managerFactory = new ManagerFactory();
         $this->entityManager = $managerFactory->getManager();
@@ -25,9 +24,15 @@ class CarRepository {
         return $this->carRepository->findAll();
     }
 
-    public function findBy(String $nameDriver) {
+    public function findByName(String $nameDriver) {
         return $this->carRepository->findOneBy([
             'name_driver' => $nameDriver
+        ]);
+    }
+
+    public function existPosition(Int $position) {
+        return $this->carRepository->findOneBy([
+            'position' => $position
         ]);
     }
 
@@ -53,6 +58,7 @@ class CarRepository {
         $car->setColor($argv[3]);
         $car->setNumber($argv[4]);
         $car->setStatus($argv[5] == "Ativo" ? 1 : 0);
+        $car->setPosition($argv[6] ?? 0);
         return $car;
     }
 
@@ -74,5 +80,18 @@ class CarRepository {
             return true;
         }
         return false;
+    }
+
+    public function position(String $carName, int $position): void {
+        if($this->existPosition($position)){
+            echo "\nJá existe piloto cadastrado na posição {$position}\n\n";
+            exit;
+        }
+
+        $car = $this->findByName($carName);
+
+        $car->setPosition($position);
+        $this->entityManager->persist($car);
+        $this->entityManager->flush();
     }
 }

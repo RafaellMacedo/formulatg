@@ -3,6 +3,7 @@
 namespace Formulatg\Repositories;
 
 use Doctrine\ORM\EntityRepository;
+use Formulatg\Entities\Car;
 use Formulatg\Entities\ManagerFactory;
 use Formulatg\Entities\Racing;
 use Formulatg\Util\Message;
@@ -18,7 +19,6 @@ class RacingRepository {
     private $message;
 
     /**
-     * @throws Exception
      * @var EntityRepository $racingRepository
      */
     public function __construct() {
@@ -36,7 +36,7 @@ class RacingRepository {
         return $this->racingRepository->findAll();
     }
 
-    public function findBy(String $name): Racing {
+    public function findByName(String $name): Racing {
         return $this->racingRepository->findOneBy([
             'name' => $name
         ]);
@@ -57,7 +57,32 @@ class RacingRepository {
         }
     }
 
-    public function beginRacing($nameRacing): void {
+    public function isInvalid(Racing $racing): bool {
+        if($racing->getRacingCar()->count() <= 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public function existPilotInvalid(Racing $racing): bool {
+        $positionsEmpty = $racing->getRacingCar()
+            ->map(function(Car $car) {
+               if($car->getPosition() === 0) {
+                   return 'empty';
+               }
+               return $car->getPosition();
+            })->toArray();
+
+        if(in_array('empty', $positionsEmpty)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @var Racing $racing
+    */
+    public function beginRacing($racingName): void {
         $findRacingBegin = [
             'status' => RacingEnum::INICIADO
         ];
@@ -67,19 +92,27 @@ class RacingRepository {
             exit;
         }
 
-        $racing = $this->racingRepository->findOneBy([
-            'name' => $nameRacing
-        ]);
+        $racing = $this->findByName($racingName);
 
         if($racing) {
+            if($this->isInvalid($racing)){
+                echo "\nCorrida só pode ser iniciada com dois ou mais pilotos cadastrados!\n\n";
+                exit;
+            }
+
+            if($this->existPilotInvalid($racing)){
+                echo "\nExiste piloto sem posição definida!\n\n";
+                exit;
+            }
+
             $racing->setStatus(RacingEnum::INICIADO);
             $this->entityManager->persist($racing);
             $this->entityManager->flush();
-            echo "\nCorrida {$nameRacing} Iniciada\n\n";
+            echo "\nCorrida {$racingName} Iniciada\n\n";
             exit;
         }
 
-        echo "\nCorrida {$nameRacing} Não Encontrada\n\n";
+        echo "\nCorrida {$racingName} Não Encontrada\n\n";
     }
 
     public function pauseRacing($nameRacing): void {

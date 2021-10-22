@@ -13,7 +13,10 @@ class HistoryRacing {
      * @GeneratedValue
      * @Column(type="integer")
      */
-    private int $id;
+    protected int $id;
+
+    /** @column(type="integer") */
+    public int $racing;
 
     /** @column(type="integer") */
     public int $carExceed;
@@ -61,5 +64,13 @@ class HistoryRacing {
 
     public function setPositionCarOverpast(string $positionCarOverpast): void {
         $this->positionCarOverpast = $positionCarOverpast;
+    }
+
+    public function getRacing(): int {
+        return $this->racing;
+    }
+
+    public function setRacing(int $racing): void{
+        $this->racing = $racing;
     }
 }

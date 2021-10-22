@@ -11,7 +11,6 @@ class RacingCarRepository {
 
     protected EntityRepository $racingCarRepository;
 
-    /** @throws Exception */
     public function __construct() {
         $managerFactory = new ManagerFactory();
         $this->entityManager = $managerFactory->getManager();
@@ -40,7 +39,7 @@ class RacingCarRepository {
     public function addRacingCar(String $racingName, String $carName): void {
         $racing = $this->findRacing($racingName);
         $car = $this->findCar($carName);
-
+        $car->setPosition(0);
         $racing->addCar($car);
 
         $this->entityManager->flush();
@@ -73,4 +72,5 @@ class RacingCarRepository {
         $this->entityManager->persist($racing);
         $this->entityManager->flush();
     }
+
 }

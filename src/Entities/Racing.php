@@ -4,6 +4,7 @@ namespace Formulatg\Entities;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Formulatg\Util\RacingEnum;
+use phpDocumentor\Reflection\Types\Collection;
 
 /**
  * @Entity
@@ -16,7 +17,7 @@ final class Racing {
      * @GeneratedValue
      * @Column(type="integer")
     */
-    private int $id;
+    protected int $id;
 
     /**
      * @Column(type="integer")
@@ -67,10 +68,11 @@ final class Racing {
         $car->deleteRacing($this);
     }
 
-    /**
-     * @return Car[]
-    */
-    public function getRacingCar() {
+    public function getRacingCar(): ArrayCollection {
         return $this->cars;
+    }
+
+    public function isStarted(): bool {
+        return $this->status == RacingEnum::INICIADO;
     }
 }

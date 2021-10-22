@@ -12,7 +12,7 @@ $id = $argv[1];
 $nameDriver = $argv[2];
 
 $car = $entityManager->find(Car::class, $id);
-$car->setNameDriver($nameDriver);
+$car->setPosition(0);
 
 $entityManager->persist($car);
 $entityManager->flush();

@@ -2,6 +2,7 @@
 
 use Formulatg\Commands\listCommands;
 use Formulatg\Controllers\CarController;
+use Formulatg\Controllers\HistoryRacingController;
 use Formulatg\Controllers\RacingCarController;
 use Formulatg\Controllers\RacingController;
 use Formulatg\Entities\ManagerFactory;
@@ -14,7 +15,7 @@ try {
     switch ($command){
         case 'listarComando':
                 $listCommands = new listCommands();
-                echo $listCommands->listCommands();
+                $listCommands->listCommands();
             break;
         case 'cadastrarCarro': $controller = new CarController();
             $controller->store($argv);
@@ -22,6 +23,21 @@ try {
 
         case 'mostrarCarro': $controller = new CarController();
                 $controller->index();
+            break;
+
+        case 'posicaoCarro':
+            if(!isset($argv[2])){
+                echo "\nInforme o nome do piloto\n\n";
+                break;
+            }
+
+            if(!isset($argv[3])){
+                echo "\nInforme a posição do carro\n\n";
+                break;
+            }
+
+            $controller = new CarController();
+            $controller->position($argv);
             break;
 
         case 'corrida':
@@ -33,13 +49,12 @@ try {
                 $racingCarInput = [
                     'mostrarPilotos',
                     'addCarro',
-                    'removerCarro',
-                    'posicao'
+                    'removerCarro'
                 ];
 
                 if(in_array($input, $racingCarInput)) {
                     if(!isset($argv[3])){
-                        echo "\nInforme o nome da corrida que deseja adicionar o carro\n\n";
+                        echo "\nInforme o nome da corrida\n\n";
                         break;
                     }
 
@@ -50,13 +65,9 @@ try {
                 break;
             }
 
-            echo "\nInforme a ação que deseja fazer: \n\n".
-                "mostrar - {Mostra todas as Corrida}\n" .
-                "mostrarPilotos <nome da corrida \"\"> {Mostra todas os pilotos da corrida}\n" .
-                "criar - {Criar Corrida}\n" .
-                "addCarro - {Cadastrar Carro na Corrida}\n" .
-                "removerCarro - {Remover Carro da Corrida}\n" .
-                "posicao - {Definir Posição do Carro}\n\n";
+            $listCommands = new listCommands();
+            $listCommands->commandRacing();
+
             break;
 
         case 'iniciarCorrida':
@@ -70,6 +81,13 @@ try {
             break;
 
         case 'ultrapassar':
+            if(!isset($argv[2])){
+                echo "\nInforme o nome da corrida\n\n";
+                break;
+            }
+
+            $controller = new HistoryRacingController();
+            $controller->ultrapassar($argv);
             break;
 
         case 'finalizarCorrida':

@@ -10,7 +10,7 @@ class CarController {
     /**
      * @var CarRepository
     */
-    private $repository;
+    private $carRepository;
 
     /**
      * @var Message
@@ -18,23 +18,27 @@ class CarController {
     private $message;
 
     public function __construct() {
-        $this->repository = new CarRepository();
+        $this->carRepository = new CarRepository();
         $this->message = new Message();
     }
 
     public function index(): void {
-        $this->repository->showCars();
+        $this->carRepository->showCars();
     }
 
     public function store($argv): void {
-        $car = $this->repository->fromArgvToFields($argv);
+        $car = $this->carRepository->fromArgvToFields($argv);
 
-        if($this->repository->isExist($car)){
+        if($this->carRepository->isExist($car)){
             $this->message->pilotRegisteredRacing();
             exit;
         }
 
-        $this->repository->create($car);
+        $this->carRepository->create($car);
         $this->message->pilotRegisteredSuccess();
+    }
+
+    public function position(Array $fields): void {
+        $this->carRepository->position($fields[2], $fields[3]);
     }
 }
