@@ -88,7 +88,7 @@ class RacingRepository {
         ];
 
         if($racing = $this->racingRepository->findOneBy($findRacingBegin)){
-            echo "\nJá existe uma corrida iniciada, finalize {$racing->getName()}\n\n";
+            $this->message->existRacingStarted($racing->getName());
             exit;
         }
 
@@ -96,28 +96,28 @@ class RacingRepository {
 
         if($racing) {
             if($racing->isFinished()){
-                echo "\nCorrida finalizada não pode ser iniciada novamente, cadastre uma nova corrida\n\n";
+                $this->message->racingFinishedAndNotStart();
                 exit;
             }
 
             if($this->isInvalid($racing)){
-                echo "\nCorrida só pode ser iniciada com dois ou mais pilotos cadastrados!\n\n";
+                $this->message->racingFewPilots();
                 exit;
             }
 
             if($this->existPilotInvalid($racing)){
-                echo "\nExiste piloto sem posição definida!\n\n";
+                $this->message->existPilotWithoutPosition();
                 exit;
             }
 
             $racing->setStatus(RacingEnum::STARTED);
             $this->entityManager->persist($racing);
             $this->entityManager->flush();
-            echo "\nCorrida {$racingName} Iniciada\n\n";
+            $this->message->racingStart($racing->getName());
             exit;
         }
 
-        echo "\nCorrida {$racingName} Não Encontrada\n\n";
+        $this->message->racingNotFound($racingName);
     }
 
     public function pauseRacing($racingName): void {
@@ -129,12 +129,11 @@ class RacingRepository {
             $racing->setStatus(RacingEnum::PAUSED);
             $this->entityManager->persist($racing);
             $this->entityManager->flush();
-
-            echo "\nCorrida pausada!\n\n";
+            $this->message->racingPaused();
             exit;
         }
 
-        echo "\nCorrida {$racingName} Não Encontrada\n\n";
+        $this->message->racingNotFound($racingName);
     }
 
     /**
@@ -154,21 +153,24 @@ class RacingRepository {
     public function create(Racing $racing): void {
         $this->entityManager->persist($racing);
         $this->entityManager->flush();
-
-        echo "\nCorrida criada!\n\n";
+        $this->message->racingCreate();
     }
 
     public function finish(String $racingName): void {
         $racing = $this->findByName($racingName);
 
         if($racing){
+            if(!$racing->isStarted()){
+                $this->message->racingNotCanFinished();
+                exit;
+            }
+
             $racing->setStatus(RacingEnum::FINISHED);
             $this->entityManager->persist($racing);
             $this->entityManager->flush();
-
             exit;
         }
 
-        echo "\nCorrida {$racingName} Não Encontrada\n\n";
+        $this->message->racingNotFound($racingName);
     }
 }
