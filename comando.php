@@ -10,12 +10,19 @@ try {
     $message = new Message();
 
     if(empty($command)){
-        echo "\nDigite o comando listarComando para listar todos os comandos\n\n";
+        $message->infoCommand();
         exit;
     }
 
     $commandController = new CommandController($argv);
-    $commandController->$command();
+
+    if($commandController->exist($command)) {
+        $commandController->$command();
+        exit;
+    }
+
+    $message->commandNotFound();
+    $message->infoCommand();
 
 } catch (Exception $exception){
 

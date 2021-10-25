@@ -3,6 +3,7 @@
 namespace Formulatg\Controllers;
 
 use Formulatg\Commands\listCommands;
+use Formulatg\Util\CommandEnum;
 use Formulatg\Util\Message;
 
 class CommandController {
@@ -17,6 +18,15 @@ class CommandController {
     public function __construct(Array $fields) {
         $this->fields = $fields;
         $this->message = new Message();
+    }
+
+    public function exist(String $command): bool {
+        if(empty($command)){
+            $this->message->infoCommand();
+            return false;
+        }
+
+        return in_array($command, CommandEnum::COMANDS);
     }
 
     public function listarComando(): void {

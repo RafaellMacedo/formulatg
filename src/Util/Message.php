@@ -31,4 +31,12 @@ class Message {
     public function racingNotStarted(): void {
         echo "\nCorrida não iniciada!\n\n";
     }
+
+    public function commandNotFound(): void {
+        echo "\nComando não encontrado\n\n";
+    }
+
+    public function infoCommand(): void {
+        echo "\nDigite o comando listarComando para listar todos os comandos\n\n";
+    }
 }
