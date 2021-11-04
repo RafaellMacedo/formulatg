@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Formulatg\Entities\Car;
 use Formulatg\Entities\ManagerFactory;
 use InvalidArgumentException;
+use PHPUnit\Exception;
 
 class CarRepository {
 
@@ -66,9 +67,23 @@ class CarRepository {
      * @param Car $car
      * @throws \Exception
      */
-    public function create(Car $car): void {
-        $this->entityManager->persist($car);
-        $this->entityManager->flush();
+    public function create(Car $car): bool {
+        try {
+            if($this->isExist($car)){
+                return false;
+            }
+
+            if(empty($car->getNameDriver())){
+                return false;
+            }
+
+            $this->entityManager->persist($car);
+            $this->entityManager->flush();
+
+            return true;
+        } catch(\Exception $exception) {
+            throw new \DomainException($exception->getMessage());
+        }
     }
 
     public function isExist(Car $car): bool {
@@ -84,7 +99,8 @@ class CarRepository {
 
     public function position(String $carName, int $position): void {
         if($this->existPosition($position)){
-            echo "\nJá existe piloto cadastrado na posição {$position}\n\n";
+//            echo "\nJá existe piloto cadastrado na posição {$position}\n\n";
+            throw new \DomainException("Já existe piloto cadastrado na posição {$position}");
             exit;
         }
 

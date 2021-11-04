@@ -26,16 +26,19 @@ class CarController {
         $this->carRepository->showCars();
     }
 
-    public function store($argv): void {
-        $car = $this->carRepository->fromArgvToFields($argv);
+    public function store($car): bool {
+        if(is_array($car)){
+            $car = $this->carRepository->fromArgvToFields($car);
+        }
 
         if($this->carRepository->isExist($car)){
             $this->message->pilotRegisteredRacing();
-            exit;
+            return false;
         }
 
         $this->carRepository->create($car);
         $this->message->pilotRegisteredSuccess();
+        return true;
     }
 
     public function position(Array $fields): void {

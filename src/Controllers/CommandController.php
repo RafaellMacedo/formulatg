@@ -20,12 +20,12 @@ class CommandController {
         $this->message = new Message();
     }
 
-    public function exist(String $command): bool {
+    /** @throws \DomainException */
+    public function exist(String $command) {
         if(empty($command)){
-            $this->message->infoCommand();
-            return false;
+                $this->message->infoCommand();
         }
-
+//        throw new \DomainException($this->message->infoCommand());
         return in_array($command, CommandEnum::COMANDS);
     }
 

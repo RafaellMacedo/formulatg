@@ -20,7 +20,7 @@ final class Car {
      */
     protected int $id;
 
-    /** @Column(type="string") */
+    /** @Column(type="string", nullable=false) */
     public string $name_driver;
 
     /** @Column(type="string") */

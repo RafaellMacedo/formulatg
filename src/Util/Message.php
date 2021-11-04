@@ -65,7 +65,9 @@ class Message {
     }
 
     public function infoCommand(): void {
-        echo "\nDigite o comando listarComando para listar todos os comandos\n\n";
+//        echo "\nDigite o comando listarComando para listar todos os comandos\n\n";
+        throw new \DomainException("Digite o comando listarComando para listar todos os comandos");
+        exit;
     }
 
     public function racingFinishedAndNotStart(): void {
