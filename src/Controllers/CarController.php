@@ -22,26 +22,31 @@ class CarController {
         $this->message = new Message();
     }
 
-    public function index(): void {
+    public function showListCars(): void {
         $this->carRepository->showCars();
     }
 
-    public function store($car): bool {
+    public function create($car): void {
         if(is_array($car)){
             $car = $this->carRepository->fromArgvToFields($car);
         }
 
-        if($this->carRepository->isExist($car)){
-            $this->message->pilotRegisteredRacing();
-            return false;
+        $resultCar = $this->carRepository->create($car);
+        echo $resultCar["message"];
+    }
+
+    public function removerCar($carName): void{
+        if(empty($carName)){
+            echo $this->message->emptyNamePilot();
+            exit;
         }
 
-        $this->carRepository->create($car);
-        $this->message->pilotRegisteredSuccess();
-        return true;
+        $resultCar = $this->carRepository->delete($carName);
+        echo $resultCar["message"];
     }
 
     public function position(Array $fields): void {
-        $this->carRepository->position($fields[2], $fields[3]);
+        $resultPosition = $this->carRepository->position($fields[2], $fields[3]);
+        echo $resultPosition['message'];
     }
 }

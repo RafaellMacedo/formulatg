@@ -46,7 +46,7 @@ class RacingRepository {
         $racingList = $this->findAll();
 
         if(!$racingList) {
-            $this->message->racingEmpty();
+            echo $this->message->racingEmpty();
             exit;
         }
 
@@ -88,7 +88,7 @@ class RacingRepository {
         ];
 
         if($racing = $this->racingRepository->findOneBy($findRacingBegin)){
-            $this->message->existRacingStarted($racing->getName());
+            echo $this->message->existRacingStarted($racing->getName());
             exit;
         }
 
@@ -96,28 +96,28 @@ class RacingRepository {
 
         if($racing) {
             if($racing->isFinished()){
-                $this->message->racingFinishedAndNotStart();
+                echo $this->message->racingFinishedAndNotStart();
                 exit;
             }
 
             if($this->isInvalid($racing)){
-                $this->message->racingFewPilots();
+                echo $this->message->racingFewPilots();
                 exit;
             }
 
             if($this->existPilotInvalid($racing)){
-                $this->message->existPilotWithoutPosition();
+                echo $this->message->existPilotWithoutPosition();
                 exit;
             }
 
             $racing->setStatus(RacingEnum::STARTED);
             $this->entityManager->persist($racing);
             $this->entityManager->flush();
-            $this->message->racingStart($racing->getName());
+            echo $this->message->racingStart($racing->getName());
             exit;
         }
 
-        $this->message->racingNotFound($racingName);
+        echo $this->message->racingNotFound($racingName);
     }
 
     public function pauseRacing($racingName): void {
@@ -129,11 +129,11 @@ class RacingRepository {
             $racing->setStatus(RacingEnum::PAUSED);
             $this->entityManager->persist($racing);
             $this->entityManager->flush();
-            $this->message->racingPaused();
+            echo $this->message->racingPaused();
             exit;
         }
 
-        $this->message->racingNotFound($racingName);
+        echo $this->message->racingNotFound($racingName);
     }
 
     /**
@@ -153,7 +153,7 @@ class RacingRepository {
     public function create(Racing $racing): void {
         $this->entityManager->persist($racing);
         $this->entityManager->flush();
-        $this->message->racingCreate();
+        echo $this->message->racingCreate();
     }
 
     public function finish(String $racingName): void {
@@ -161,7 +161,7 @@ class RacingRepository {
 
         if($racing){
             if(!$racing->isStarted()){
-                $this->message->racingNotCanFinished();
+                echo $this->message->racingNotCanFinished();
                 exit;
             }
 
@@ -171,6 +171,6 @@ class RacingRepository {
             exit;
         }
 
-        $this->message->racingNotFound($racingName);
+        echo $this->message->racingNotFound($racingName);
     }
 }

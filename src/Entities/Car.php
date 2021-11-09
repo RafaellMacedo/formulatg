@@ -99,4 +99,11 @@ final class Car {
     public function getRacing(): Collection {
         return $this->racing;
     }
+
+    public function existParticipationRacing(): bool {
+        if($this->racing->count() > 0){
+            return true;
+        }
+        return false;
+    }
 }

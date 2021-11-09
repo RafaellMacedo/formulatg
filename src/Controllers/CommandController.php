@@ -23,9 +23,9 @@ class CommandController {
     /** @throws \DomainException */
     public function exist(String $command) {
         if(empty($command)){
-                $this->message->infoCommand();
+            echo $this->message->infoCommand();
         }
-//        throw new \DomainException($this->message->infoCommand());
+
         return in_array($command, CommandEnum::COMANDS);
     }
 
@@ -36,22 +36,27 @@ class CommandController {
 
     public function cadastrarCarro(): void {
         $controller = new CarController();
-        $controller->store($this->fields);
+        $controller->create($this->fields);
     }
 
     public function mostrarCarro(): void {
         $controller = new CarController();
-        $controller->index();
+        $controller->showListCars();
+    }
+
+    public function removerCarro(): void {
+        $controller = new CarController();
+        $controller->removerCar($this->fields[2]);
     }
 
     public function posicaoCarro(): void {
         if(!isset($this->fields[2])){
-            $this->message->emptyPilot();
+            echo $this->message->emptyNamePilot();
             exit;
         }
 
         if(!isset($this->fields[3])){
-            $this->message->infoPilotPosition();
+            echo $this->message->infoPilotPosition();
             exit;
         }
 
@@ -73,7 +78,7 @@ class CommandController {
 
             if(in_array($input, $racingCarInput)) {
                 if(!isset($this->fields[3])){
-                    $this->message->infoRacingName();
+                    echo $this->message->infoRacingName();
                     exit;
                 }
                 $controller = new RacingCarController();
@@ -120,7 +125,7 @@ class CommandController {
 
     public function informedRacing(): bool {
         if(!isset($this->fields[2])){
-            $this->message->infoRacingName();
+            echo $this->message->infoRacingName();
             return false;
         }
         return true;

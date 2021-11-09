@@ -6,15 +6,20 @@ use Doctrine\ORM\EntityRepository;
 use Formulatg\Entities\Car;
 use Formulatg\Entities\ManagerFactory;
 use Formulatg\Entities\Racing;
+use Formulatg\Util\Message;
 
 class RacingCarRepository {
 
     protected EntityRepository $racingCarRepository;
 
+    /** Message $message */
+    private $message;
+
     public function __construct() {
         $managerFactory = new ManagerFactory();
         $this->entityManager = $managerFactory->getManager();
         $this->racingCarRepository = $this->entityManager->getRepository(Racing::class);
+        $this->message = new Message();
     }
 
     /**
@@ -46,21 +51,28 @@ class RacingCarRepository {
     }
 
     public function showPilots(String $racingName): void {
+        if(empty($racingName)){
+            echo $this->message->infoRacingName();
+            exit;
+        }
+
         $racing = $this->findRacing($racingName);
 
-        echo "\nId: {$racing->getId()}\n" .
-            "Nome: {$racing->getName()}\n" .
-            "Status: {$racing->isStatus()}\n\n";
+        if($racing) {
+            echo "\nId: {$racing->getId()}\n" .
+                "Nome: {$racing->getName()}\n" .
+                "Status: {$racing->isStatus()}\n\n";
 
-        $cars = $racing->getRacingCar();
+            $cars = $racing->getRacingCar();
 
-        foreach ($cars AS $car) {
-            echo "\tId: {$car->getId()}\n" .
-                "\tPiloto: {$car->getNameDriver()}\n" .
-                "\tCor: {$car->getColor()}\n" .
-                "\tNúmero: {$car->getNumber()}\n" .
-                "\tPosição: {$car->getPosition()}\n" .
-                "\n\n";
+            foreach ($cars AS $car) {
+                echo "\tId: {$car->getId()}\n" .
+                    "\tPiloto: {$car->getNameDriver()}\n" .
+                    "\tCor: {$car->getColor()}\n" .
+                    "\tNúmero: {$car->getNumber()}\n" .
+                    "\tPosição: {$car->getPosition()}\n" .
+                    "\n\n";
+            }
         }
     }
 

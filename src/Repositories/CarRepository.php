@@ -5,6 +5,7 @@ namespace Formulatg\Repositories;
 use Doctrine\ORM\EntityRepository;
 use Formulatg\Entities\Car;
 use Formulatg\Entities\ManagerFactory;
+use Formulatg\Util\Message;
 use InvalidArgumentException;
 use PHPUnit\Exception;
 
@@ -12,10 +13,16 @@ class CarRepository {
 
     protected EntityRepository $carRepository;
 
+    /**
+     * @var Message
+    */
+    private $message;
+
     public function __construct() {
         $managerFactory = new ManagerFactory();
         $this->entityManager = $managerFactory->getManager();
         $this->carRepository = $this->entityManager->getRepository(Car::class);
+        $this->message = new Message();
     }
 
     /**
@@ -29,6 +36,10 @@ class CarRepository {
         return $this->carRepository->findOneBy([
             'name_driver' => $nameDriver
         ]);
+    }
+
+    public function findById(String $carId) {
+        return $this->entityManager->getReference(Car::class, $carId);
     }
 
     public function existPosition(Int $position) {
@@ -55,11 +66,11 @@ class CarRepository {
      */
     public function fromArgvToFields($argv): Car {
         $car = new Car();
-        $car->setNameDriver($argv[2]);
-        $car->setColor($argv[3]);
-        $car->setNumber($argv[4]);
+        $car->setNameDriver(isset($argv[2]) ? $argv[2] : '');
+        $car->setColor(isset($argv[3]) ? $argv[3] : '');
+        $car->setNumber(isset($argv[4]) ? $argv[4] : 0);
         $car->setStatus($argv[5] == "Ativo" ? 1 : 0);
-        $car->setPosition($argv[6] ?? 0);
+        $car->setPosition($argv[6] ? $argv[6] : 0);
         return $car;
     }
 
@@ -67,20 +78,29 @@ class CarRepository {
      * @param Car $car
      * @throws \Exception
      */
-    public function create(Car $car): bool {
+    public function create(Car $car): array {
         try {
-            if($this->isExist($car)){
-                return false;
+            if(empty($car->getNameDriver())){
+                return [
+                    "success" => false,
+                    "message" => $this->message->emptyNamePilot()
+                ];
             }
 
-            if(empty($car->getNameDriver())){
-                return false;
+            if($this->isExist($car)){
+                return [
+                    "success" => false,
+                    "message" => $this->message->pilotRegisteredRacing()
+                ];
             }
 
             $this->entityManager->persist($car);
             $this->entityManager->flush();
 
-            return true;
+            return [
+                "success" => true,
+                "message" => $this->message->pilotRegisteredSuccess()
+            ];
         } catch(\Exception $exception) {
             throw new \DomainException($exception->getMessage());
         }
@@ -97,11 +117,45 @@ class CarRepository {
         return false;
     }
 
-    public function position(String $carName, int $position): void {
+    public function pilotParticipationRacing(Car $car): bool {
+        if($car->existParticipationRacing()){
+            return true;
+        }
+
+        return false;
+    }
+
+    public function delete($carName): array {
+        $car = $this->findByName($carName);
+
+        if(!$car){
+            return [
+                "success" => false,
+                "message" => $this->message->pilotNotFound()
+            ];
+        }
+
+        if($this->pilotParticipationRacing($car)){
+            return [
+                "success" => false,
+                "message" =>$this->message->pilotNotDeleteRacing()
+            ];
+        }
+
+        $car = $this->findByName($carName);
+
+        $this->entityManager->remove($car);
+        $this->entityManager->flush();
+
+        return [
+            "success" => true,
+            "message" => $this->message->pilotDeltedSuccess()
+        ];
+    }
+
+    public function position(String $carName, int $position): array {
         if($this->existPosition($position)){
-//            echo "\nJá existe piloto cadastrado na posição {$position}\n\n";
-            throw new \DomainException("Já existe piloto cadastrado na posição {$position}");
-            exit;
+            echo "\nJá existe piloto cadastrado na posição {$position}\n\n";
         }
 
         $car = $this->findByName($carName);
@@ -109,5 +163,10 @@ class CarRepository {
         $car->setPosition($position);
         $this->entityManager->persist($car);
         $this->entityManager->flush();
+
+        return [
+            "success" => true,
+            "message" => $this->message->pilotPositionSuccessed()
+        ];
     }
 }

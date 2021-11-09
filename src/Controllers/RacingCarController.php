@@ -24,7 +24,7 @@ class RacingCarController {
 
     public function addCarro(Array $fields): void {
         if(!isset($fields[4])) {
-            $this->message->emptyPilot();
+            echo $this->message->emptyNamePilot();
             exit;
         }
 
@@ -37,7 +37,7 @@ class RacingCarController {
 
     public function removerCarro(Array $fields): void {
         if(!isset($fields[4])) {
-            $this->message->emptyPilot();
+            echo $this->message->emptyNamePilot();
             exit;
         }
 

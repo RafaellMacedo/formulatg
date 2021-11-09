@@ -72,6 +72,15 @@ final class Racing {
         return $this->cars;
     }
 
+    public function existCar(Car $searchCar): bool {
+        foreach ($this->cars AS $car) {
+            if($car->getId() == $searchCar->getId()){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function isStarted(): bool {
         return $this->status == RacingEnum::STARTED;
     }

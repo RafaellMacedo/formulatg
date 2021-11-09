@@ -5,8 +5,10 @@ namespace Formulatg\Util;
 class CommandEnum {
 
     public const COMANDS = [
+        "listarComando",
         "cadastrarCarro",
         "mostrarCarro",
+        "removerCarro",
         "posicaoCarro",
         "corrida",
         "mostrar",
@@ -18,7 +20,7 @@ class CommandEnum {
         "iniciarCorrida",
         "pausarCorrida",
         "ultrapassar",
-        "finalizarCorrida"
+        "finalizarCorrida",
     ];
 
 }

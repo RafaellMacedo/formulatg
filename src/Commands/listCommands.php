@@ -24,6 +24,7 @@ class listCommands {
             "\tStatus do Carro Ativo ou Inativo (Opcional)\n\n" .
             "\t***\n\n" .
             "\n> mostrarCarro\n" .
+            "\n> removerCarro\n" .
             "\n> posicaoCarro\n";
     }
 
