@@ -6,7 +6,8 @@ class listCommands {
 
     public function listCommands(): void {
         $this->head();
-        $this->commandCar();
+        $this->commandCreateCar();
+        $this->commandCarAction();
         $this->commandRacing();
         $this->commandActionRacing();
     }
@@ -15,15 +16,18 @@ class listCommands {
         echo "\nLISTA DE COMANDOS\n";
     }
 
-    public function commandCar(): void{
+    public function commandCreateCar(): void {
         echo "\n> cadastrarCarro <nome_piloto> <cor> <numero> <status OPCIONAL>\n\n" .
             "\t**Lista de informações**\n\n" .
             "\tnome do piloto usando aspas duplas \"\"\n" .
             "\tcor do carro\n" .
             "\tnúmero\n" .
             "\tStatus do Carro Ativo ou Inativo (Opcional)\n\n" .
-            "\t***\n\n" .
-            "\n> mostrarCarro\n" .
+            "\t***\n\n";
+    }
+
+    public function commandCarAction(): void {
+        echo "\n> mostrarCarro\n" .
             "\n> removerCarro\n" .
             "\n> posicaoCarro\n";
     }

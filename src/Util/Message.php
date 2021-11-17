@@ -16,6 +16,14 @@ class Message {
         return "\nPiloto cadastrado!\n\n";
     }
 
+    public function pilotExistPositionAnother(String $position): string {
+        return "\nJá existe piloto cadastrado na posição {$position}\n\n";
+    }
+
+    public function pilotInfoEmpty(): string {
+        return "\n***\n\nDigite todas as informações necessárias para cadastrar o piloto!\n";
+    }
+
     public function pilotNotFound(): string {
         return "\nPiloto não encontrado!\n\n";
     }
@@ -34,6 +42,14 @@ class Message {
 
     public function infoPilotPosition(): string {
         return "\nInforme a posição do carro\n\n";
+    }
+
+    public function pilotCheckInRacingSuccessed(): string {
+        return "\nPiloto cadastrado na corrida com sucesso!\n\n";
+    }
+
+    public function positionInvalid(String $position): string {
+        return "\nPosição {$position} invalida\n\n";
     }
 
     public function existPilotWithoutPosition(): string {

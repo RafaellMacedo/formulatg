@@ -48,6 +48,7 @@ class RacingCarRepository {
         $racing->addCar($car);
 
         $this->entityManager->flush();
+        echo $this->message->pilotCheckInRacingSuccessed();
     }
 
     public function showPilots(String $racingName): void {

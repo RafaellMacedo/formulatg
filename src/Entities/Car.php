@@ -106,4 +106,12 @@ final class Car {
         }
         return false;
     }
+
+    public function isValid(): bool {
+        if(empty($this->getNameDriver()) || empty($this->getColor()) || empty($this->getNumber())) {
+            return false;
+        }
+
+        return true;
+    }
 }

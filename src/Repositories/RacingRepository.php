@@ -153,7 +153,7 @@ class RacingRepository {
     public function fromArgvToFields($argv): Racing {
         $racing = new Racing();
         $racing->setName($argv[3]);
-        $racing->setStatus(1);
+        $racing->setStatus(0);
         return $racing;
     }
 

@@ -87,6 +87,13 @@ class CarRepository {
                 ];
             }
 
+            if(!$car->isValid()){
+                return [
+                    "success" => false,
+                    "message" => $this->message->pilotInfoEmpty()
+                ];
+            }
+
             if($this->isExist($car)){
                 return [
                     "success" => false,
@@ -154,8 +161,18 @@ class CarRepository {
     }
 
     public function position(String $carName, int $position): array {
+        if($position == 0) {
+            return [
+                "success" => false,
+                "message" => $this->message->positionInvalid($position)
+            ];
+        }
+
         if($this->existPosition($position)){
-            echo "\nJá existe piloto cadastrado na posição {$position}\n\n";
+            return [
+                "success" => false,
+                "message" => $this->message->pilotExistPositionAnother($position)
+            ];
         }
 
         $car = $this->findByName($carName);

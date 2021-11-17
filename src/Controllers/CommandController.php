@@ -36,6 +36,14 @@ class CommandController {
 
     public function cadastrarCarro(): void {
         $controller = new CarController();
+
+        if(count($this->fields) < 5){
+            echo $this->message->pilotInfoEmpty();
+            $listCommands = new listCommands();
+            $listCommands->commandCreateCar();
+            exit;
+        }
+
         $controller->create($this->fields);
     }
 

@@ -21,6 +21,7 @@
         "doctrine/orm": "^2.10"
     },
     "require": {
-        "doctrine/migrations": "^3.3"
+        "doctrine/migrations": "^3.3",
+        "doctrine/dbal": "3.1.4"
     }
 }

@@ -9,7 +9,7 @@ $command = $argv[1];
 $message = new Message();
 
 if(empty($command)){
-    $message->infoCommand();
+    echo $message->infoCommand();
     exit;
 }
 
