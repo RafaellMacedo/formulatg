@@ -74,7 +74,7 @@ class HistoryRacingRepository {
         $racing = $this->findRacing($racingName);
 
         if(!$racing->isStarted()){
-            $this->message->racingNotStarted();
+            echo $this->message->racingNotStarted();
             exit;
         }
 

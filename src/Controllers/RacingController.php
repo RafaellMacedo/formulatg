@@ -34,7 +34,9 @@ class RacingController {
         }
 
         $racing = $this->racingRepository->fromArgvToFields($argv);
-        $this->racingRepository->create($racing);
+        $racingCreate = $this->racingRepository->create($racing);
+
+        echo $racingCreate['message'];
     }
 
     public function start($nameRacing): void {
@@ -43,7 +45,8 @@ class RacingController {
             exit;
         }
 
-        $this->racingRepository->startRacing($nameRacing);
+        $resultStartRacing = $this->racingRepository->startRacing($nameRacing);
+        echo $resultStartRacing['message'];
     }
 
     public function pause(String $nameRacing): void {

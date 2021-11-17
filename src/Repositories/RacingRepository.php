@@ -82,39 +82,50 @@ class RacingRepository {
     /**
      * @var Racing $racing
     */
-    public function startRacing($racingName): void {
+    public function startRacing($racingName): array {
         $findRacingBegin = [
             'status' => RacingEnum::STARTED
         ];
 
         if($racing = $this->racingRepository->findOneBy($findRacingBegin)){
-            echo $this->message->existRacingStarted($racing->getName());
-            exit;
+            return [
+                "success" => false,
+                "message" => $this->message->existRacingStarted($racing->getName())
+            ];
         }
 
         $racing = $this->findByName($racingName);
 
         if($racing) {
             if($racing->isFinished()){
-                echo $this->message->racingFinishedAndNotStart();
-                exit;
+                return [
+                    "success" => false,
+                    "message" => $this->message->racingFinishedAndNotStart()
+                ];
             }
 
             if($this->isInvalid($racing)){
-                echo $this->message->racingFewPilots();
-                exit;
+                return [
+                    "success" => false,
+                    "message" => $this->message->racingFewPilots()
+                ];
             }
 
             if($this->existPilotInvalid($racing)){
-                echo $this->message->existPilotWithoutPosition();
-                exit;
+                return [
+                    "success" => false,
+                    "message" => $this->message->existPilotWithoutPosition()
+                ];
             }
 
             $racing->setStatus(RacingEnum::STARTED);
             $this->entityManager->persist($racing);
             $this->entityManager->flush();
-            echo $this->message->racingStart($racing->getName());
-            exit;
+
+            return [
+                "success" => true,
+                "message" => $this->message->racingStart($racing->getName())
+            ];
         }
 
         echo $this->message->racingNotFound($racingName);
@@ -150,10 +161,21 @@ class RacingRepository {
      * @param Racing $racing
      * @throws \Exception
      */
-    public function create(Racing $racing): void {
+    public function create(Racing $racing): array {
+        if(empty($racing->getName())){
+            return [
+                "success" => false,
+                "message" => $this->message->infoRacingName()
+            ];
+        }
+
         $this->entityManager->persist($racing);
         $this->entityManager->flush();
-        echo $this->message->racingCreate();
+
+        return [
+            "success" => true,
+            "message" => $this->message->racingCreate()
+        ];
     }
 
     public function finish(String $racingName): void {
