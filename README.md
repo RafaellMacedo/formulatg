@@ -2,6 +2,10 @@
 
 Este é um projeto chamado Formula TG com o foco de atender os estudos de phpunit e docker.
 
+Para desenvolver este proejto, utilizei uma atividade conhecida por alguns devs, que é chamado de Formula TG, para saber mais clie no link
+
+https://github.com/RafaellMacedo/formulatg/blob/master/formulatg.pdf
+
 Para iniciar o projeto será necessário ter instalado o docker na máquina.
 
 Se ainda não tem docker instalado, só clicar ai do lado, no icone que você será direcionado para o site de instalação do docker
