@@ -1,66 +1,28 @@
-Formula TG
-
-Criar comandos de ações no projeto
-
-Exibir Carros
-
-Realizar um getList na classe Carros para exibir todos os carros cadastrados.
-
-Adicionar Carros
-
-Para cadastrar o carro, é necessário informar os seguintes dados
-
-- Nome do Piloto
-- Cor
-- Número
-
-- A classe Carro deverá conter um atributo chamado Posição.
-
-Atributos da classe Carro
-- id
-- Nome do Piloto
-- Cor
-- Número (Único, não pode repetir)
-- Posição
-
--> Não deixar cadastrar o carro com o mesmo nome de Piloto e número.
-
-Excluir Carros
-
-Para excluir um carro, só pode ser excluído se não houver corrida iniciada e se o carro existir no banco de dados.
-
-Definir Posições
-
-- Criar um endpoint que receba o nome do piloto ou o id (ainda definir), em seguida receber um valor inteiro que será a posição do carro na largada.
-- Verificar se o carro informado existe no banco de dados, antes de gravar a posição.
-
-Iniciar Corrida
-
-Ao iniciar uma corrida, registrar o inicio da corrida, gravando uma nova corrida no banco de dados.
-
-- Não iniciar uma corrida se já existir outra corrida iniciada.
-- Não iniciar corrida sem os carros ter posições definidas
-- Não iniciar corrida tendo apenas um carro
-- Verificar se existe mais de um carro cadastrado
-
-Ultrapassar
-
-- Primeiro não Ultrapassar
-
-Finalizar Corrida
-
-- Não finalizar corrida sem ter iniciado corrida
-
-Exibir Histórico da Corrida
-
-- Exibir o histórico de corrida que já foi concluída.
-
-Duvida
-
-podendo ser consultado enquando a corrida estiver acontecendo?
-
 Uma melhoria futura
 
 Fazer corrida de treinamento informando o tempo da volta
 Uma melhoria seria informar a quantidade de volta e o tempo em cada volta, depois somar 
 e tirar a média do tempo do treinamento para definir as posições.
+
+Comando Docker
+
+docker-compose up -d
+
+Comando doctrine
+
+vendor/bin/doctrine orm:schema-tool:create
+
+vendor/bin/doctrine orm:info
+
+Atualizar schema
+vendor/bin/doctrine orm:schema-tool:update --force
+
+php commans\new-car.php
+
+Rodar a migration
+
+vendor/bin/doctrine-migrations migrations:diff
+
+vendor/bin/doctrine-migrations migrations:migrate
+
+migrations:execute --up 'Formulatg\\Migrations\\Version20211019172925'
