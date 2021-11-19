@@ -48,8 +48,21 @@ class Message {
         return "\nPiloto cadastrado na corrida com sucesso!\n\n";
     }
 
+    public function pilotExistInRacing(): string {
+        return "\nNão é possível cadastrar o mesmo piloto na corrida!\n\n";
+    }
+
+    public function pilotNotChangePositionWithRacingStarted(): string {
+        return "\nNão é possível cadastrar a posição com corrida iniciada\n\n";
+    }
+
     public function positionInvalid(String $position): string {
         return "\nPosição {$position} invalida\n\n";
+    }
+
+    public function positionMoreThanCountCarsInRacing(String $countCars): string {
+        return "\nPosição não pode ser maior que a quantidade de pilotos participando na corrida!\n\n" .
+            "Quantidade de pilotos participantes na corrida é {$countCars}\n\n";
     }
 
     public function existPilotWithoutPosition(): string {
@@ -60,7 +73,7 @@ class Message {
         return "\nNenhuma corrida criada\n\n";
     }
 
-    public function infoRacingName(): string {
+    public function emptyRacingName(): string {
         return "\nInforme o nome da Corrida\n\n";
     }
 
@@ -106,5 +119,9 @@ class Message {
 
     public function racingFewPilots(): string {
         return "\nCorrida só pode ser iniciada com dois ou mais pilotos cadastrados!\n\n";
+    }
+
+    public function exceedPilot(String $exceedName, String $overpastName): string {
+        return "\nPiloto {$exceedName} ultrapssou o piloto {$overpastName}\n\n";
     }
 }

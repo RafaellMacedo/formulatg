@@ -45,8 +45,8 @@ class CarController {
         echo $resultCar["message"];
     }
 
-    public function position(Array $fields): void {
-        $resultPosition = $this->carRepository->position($fields[2], $fields[3]);
+    public function position(String $racingName, String $nameDriver, $position): void {
+        $resultPosition = $this->carRepository->position($racingName, $nameDriver, $position);
         echo $resultPosition['message'];
     }
 }

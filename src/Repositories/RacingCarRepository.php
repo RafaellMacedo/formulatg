@@ -29,13 +29,13 @@ class RacingCarRepository {
         return $this->racingCarRepository->findAll();
     }
 
-    public function findCar($carName): Car {
+    private function findCar($carName): Car {
         /** @var EntityRepository $carRepository */
         $carRepository = $this->entityManager->getRepository(Car::class);
         return $carRepository->findOneBy([ 'name_driver' => $carName ]);
     }
 
-    public function findRacing($racingName): Racing {
+    private function findRacing($racingName): Racing {
         /** @var EntityRepository $racingRepository */
         $racingRepository = $this->entityManager->getRepository(Racing::class);
         return $racingRepository->findOneBy([ 'name' => $racingName ]);
@@ -44,6 +44,12 @@ class RacingCarRepository {
     public function addRacingCar(String $racingName, String $carName): void {
         $racing = $this->findRacing($racingName);
         $car = $this->findCar($carName);
+
+        if($racing->existCar($car)){
+            echo $this->message->pilotExistInRacing();
+            exit;
+        }
+
         $car->setPosition(0);
         $racing->addCar($car);
 
@@ -53,7 +59,7 @@ class RacingCarRepository {
 
     public function showPilots(String $racingName): void {
         if(empty($racingName)){
-            echo $this->message->infoRacingName();
+            echo $this->message->emptyRacingName();
             exit;
         }
 
@@ -64,7 +70,7 @@ class RacingCarRepository {
                 "Nome: {$racing->getName()}\n" .
                 "Status: {$racing->isStatus()}\n\n";
 
-            $cars = $racing->getRacingCar();
+            $cars = $racing->getCars();
 
             foreach ($cars AS $car) {
                 echo "\tId: {$car->getId()}\n" .

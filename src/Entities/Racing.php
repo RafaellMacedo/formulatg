@@ -68,8 +68,34 @@ final class Racing {
         $car->deleteRacing($this);
     }
 
-    public function getRacingCar() {
+    public function getCars() {
         return $this->cars;
+    }
+
+    public function getCarsOrderPosition() {
+        $carsOrderPosition = $this->cars;
+        /** @var Car $car */
+        foreach ($this->cars AS $car){
+            $carsOrderPosition[$car->getPosition()] = $car;
+        }
+
+        $carsOrderPosition->removeElement($carsOrderPosition->first());
+
+        return $carsOrderPosition;
+    }
+
+    public function countCars(): int {
+        return $this->cars->count();
+    }
+
+    public function existPosition($newPosition): bool {
+        /** @var Car $car */
+        foreach ($this->cars AS $car) {
+            if($car->getPosition() == $newPosition){
+                return true;
+            }
+        }
+        return false;
     }
 
     public function existCar(Car $searchCar): bool {

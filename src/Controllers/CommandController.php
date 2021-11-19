@@ -26,7 +26,7 @@ class CommandController {
             echo $this->message->infoCommand();
         }
 
-        return in_array($command, CommandEnum::COMANDS);
+        return in_array($command, CommandEnum::COMMANDS);
     }
 
     public function listarComando(): void {
@@ -59,17 +59,22 @@ class CommandController {
 
     public function posicaoCarro(): void {
         if(!isset($this->fields[2])){
-            echo $this->message->emptyNamePilot();
+            echo $this->message->emptyRacingName();
             exit;
         }
 
         if(!isset($this->fields[3])){
+            echo $this->message->emptyNamePilot();
+            exit;
+        }
+
+        if(!isset($this->fields[4])){
             echo $this->message->infoPilotPosition();
             exit;
         }
 
         $controller = new CarController();
-        $controller->position($this->fields);
+        $controller->position($this->fields[2], $this->fields[3], $this->fields[4]);
     }
 
     public function corrida(): void {
@@ -86,7 +91,7 @@ class CommandController {
 
             if(in_array($input, $racingCarInput)) {
                 if(!isset($this->fields[3])){
-                    echo $this->message->infoRacingName();
+                    echo $this->message->emptyRacingName();
                     exit;
                 }
                 $controller = new RacingCarController();
@@ -98,6 +103,10 @@ class CommandController {
 
         $listCommands = new listCommands();
         $listCommands->commandRacing();
+    }
+
+    private function isValidCommandRacing($command){
+        return in_array($command, CommandEnum::COMMANDS);
     }
 
     public function iniciarCorrida(): void {
@@ -133,7 +142,7 @@ class CommandController {
 
     public function informedRacing(): bool {
         if(!isset($this->fields[2])){
-            echo $this->message->infoRacingName();
+            echo $this->message->emptyRacingName();
             return false;
         }
         return true;

@@ -32,7 +32,7 @@ class RacingRepository {
     /**
      * @return array
      */
-    public function findAll(): array {
+    private function findAll(): array {
         return $this->racingRepository->findAll();
     }
 
@@ -57,15 +57,15 @@ class RacingRepository {
         }
     }
 
-    public function isInvalid(Racing $racing): bool {
-        if($racing->getRacingCar()->count() <= 1) {
+    private function isInvalid(Racing $racing): bool {
+        if($racing->getCars()->count() <= 1) {
             return true;
         }
         return false;
     }
 
-    public function existPilotInvalid(Racing $racing): bool {
-        $positionsEmpty = $racing->getRacingCar()
+    private function existPilotInvalid(Racing $racing): bool {
+        $positionsEmpty = $racing->getCars()
             ->map(function(Car $car) {
                if($car->getPosition() === 0) {
                    return 'empty';
@@ -128,7 +128,10 @@ class RacingRepository {
             ];
         }
 
-        echo $this->message->racingNotFound($racingName);
+        return [
+            "success" => false,
+            "message" => $this->message->racingNotFound($racingName)
+        ];
     }
 
     public function pauseRacing($racingName): void {
@@ -165,7 +168,7 @@ class RacingRepository {
         if(empty($racing->getName())){
             return [
                 "success" => false,
-                "message" => $this->message->infoRacingName()
+                "message" => $this->message->emptyRacingName()
             ];
         }
 

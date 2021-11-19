@@ -100,6 +100,16 @@ final class Car {
         return $this->racing;
     }
 
+    public function findRacingNotFinished(): void {
+        /** @var Racing $racing */
+        foreach ($this->racing AS $racing) {
+            if($racing->isStarted()){
+                break;
+            }
+            echo "\n{$racing->getName()} - {$racing->isStatus()}\n\n";
+        }
+    }
+
     public function existParticipationRacing(): bool {
         if($this->racing->count() > 0){
             return true;

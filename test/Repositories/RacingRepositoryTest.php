@@ -58,13 +58,13 @@ class RacingRepositoryTest extends TestCase {
         $this->racingRepository->method('create')
             ->willReturn([
                 "success" => false,
-                "message" => $this->message->infoRacingName()
+                "message" => $this->message->emptyRacingName()
             ]);
 
         $resultRacing = $this->racingRepository->create($racing);
 
         $this->assertFalse($resultRacing["success"]);
-        $this->assertSame($this->message->infoRacingName(), $resultRacing["message"]);
+        $this->assertSame($this->message->emptyRacingName(), $resultRacing["message"]);
     }
 
     public function testRepository_ShouldStartRacing_ExpectedSuccess(): void {
@@ -153,6 +153,11 @@ class RacingRepositoryTest extends TestCase {
 
         $this->assertFalse($resultRacing["success"]);
         $this->assertSame($this->message->racingFewPilots(), $resultRacing["message"]);
+    }
+
+    public function testRespository(): void {
+        $carFirst = $this->carStore('Rafael', 'Black', 20, 1);
+        $this->mockCar($carFirst);
     }
 
     public function racingStore(): Racing {

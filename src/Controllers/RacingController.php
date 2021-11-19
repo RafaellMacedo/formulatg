@@ -29,7 +29,7 @@ class RacingController {
 
     public function criar($argv): void {
         if(count($argv) < 4){
-            echo $this->message->infoRacingName();
+            echo $this->message->emptyRacingName();
             exit;
         }
 
@@ -41,7 +41,7 @@ class RacingController {
 
     public function start($nameRacing): void {
         if($nameRacing == ""){
-            echo $this->message->infoRacingName();
+            echo $this->message->emptyRacingName();
             exit;
         }
 
@@ -51,7 +51,7 @@ class RacingController {
 
     public function pause(String $nameRacing): void {
         if($nameRacing == ""){
-            echo $this->message->infoRacingName();
+            echo $this->message->emptyRacingName();
             exit;
         }
 
@@ -60,7 +60,7 @@ class RacingController {
 
     public function finish(String $racingName): void {
         if($racingName == "") {
-            echo $this->message->infoRacingName();
+            echo $this->message->emptyRacingName();
             exit;
         }
 

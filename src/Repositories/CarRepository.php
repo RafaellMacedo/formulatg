@@ -5,6 +5,7 @@ namespace Formulatg\Repositories;
 use Doctrine\ORM\EntityRepository;
 use Formulatg\Entities\Car;
 use Formulatg\Entities\ManagerFactory;
+use Formulatg\Entities\Racing;
 use Formulatg\Util\Message;
 use InvalidArgumentException;
 use PHPUnit\Exception;
@@ -25,27 +26,49 @@ class CarRepository {
         $this->message = new Message();
     }
 
-    /**
-     * @return array
-     */
-    public function findAll(): array {
+    private function findAll(): array {
         return $this->carRepository->findAll();
     }
 
-    public function findByName(String $nameDriver) {
+    private function findByName(String $nameDriver): Car {
         return $this->carRepository->findOneBy([
             'name_driver' => $nameDriver
         ]);
     }
 
-    public function findById(String $carId) {
+    private function findById(String $carId): Car {
         return $this->entityManager->getReference(Car::class, $carId);
     }
 
-    public function existPosition(Int $position) {
+    private function existPosition(Int $position) {
         return $this->carRepository->findOneBy([
             'position' => $position
         ]);
+    }
+
+    private function getRacing(String $nameRacing): Racing {
+        $racingRepository = new RacingRepository();
+
+        return $racingRepository->findByName($nameRacing);
+    }
+
+    private function isExist(Car $car): bool {
+        $searchNameDriver = [
+            'name_driver' => $car->getNameDriver()
+        ];
+
+        if($this->carRepository->findOneBy($searchNameDriver)) {
+            return true;
+        }
+        return false;
+    }
+
+    private function pilotParticipationRacing(Car $car): bool {
+        if($car->existParticipationRacing()){
+            return true;
+        }
+
+        return false;
     }
 
     public function showCars(): void {
@@ -113,25 +136,6 @@ class CarRepository {
         }
     }
 
-    public function isExist(Car $car): bool {
-        $searchNameDriver = [
-            'name_driver' => $car->getNameDriver()
-        ];
-
-        if($this->carRepository->findOneBy($searchNameDriver)) {
-            return true;
-        }
-        return false;
-    }
-
-    public function pilotParticipationRacing(Car $car): bool {
-        if($car->existParticipationRacing()){
-            return true;
-        }
-
-        return false;
-    }
-
     public function delete($carName): array {
         $car = $this->findByName($carName);
 
@@ -160,7 +164,16 @@ class CarRepository {
         ];
     }
 
-    public function position(String $carName, int $position): array {
+    public function position(String $racingName, String $carName, int $position): array {
+        $racing = $this->getRacing($racingName);
+
+        if($racing->isStarted()){
+            return [
+                "success" => false,
+                "message" => $this->message->pilotNotChangePositionWithRacingStarted()
+            ];
+        }
+
         if($position == 0) {
             return [
                 "success" => false,
@@ -168,12 +181,22 @@ class CarRepository {
             ];
         }
 
-        if($this->existPosition($position)){
+        if($position > $racing->countCars()){
+            return [
+                "success" => false,
+                "message" => $this->message->positionMoreThanCountCarsInRacing($racing->countCars())
+            ];
+        }
+
+        if($racing->existPosition($position)){
             return [
                 "success" => false,
                 "message" => $this->message->pilotExistPositionAnother($position)
             ];
         }
+
+
+        if($position)
 
         $car = $this->findByName($carName);
 

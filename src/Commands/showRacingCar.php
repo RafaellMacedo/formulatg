@@ -19,7 +19,7 @@ $entityManager->getConfiguration()->setSQLLogger($debugStack);
 $racings = $racingRepository->findAll();
 
 foreach($racings AS $racing) {
-    $cars = $racing->getRacingCar()
+    $cars = $racing->getCars()
         ->map(function (Car $car) {
             return $car->getNameDriver();
         })->toArray();
@@ -28,7 +28,7 @@ foreach($racings AS $racing) {
         "Nome: {$racing->getName()}\n" .
         "Carros: " . implode(",", $cars);
 
-    $cars = $racing->getRacingCar();
+    $cars = $racing->getCars();
 
     foreach ($cars AS $car) {
         echo "\n\n\tId: {$car->getId()}\n" .

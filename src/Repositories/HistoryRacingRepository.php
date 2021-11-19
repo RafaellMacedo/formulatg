@@ -25,9 +25,13 @@ class HistoryRacingRepository {
         $this->message = new Message();
     }
 
-    public function show(): void {
-        $listHistoryRacing =  $this->historyRacingRepository->findAll();
+    public function show(String $racingName): void {
+        $listHistoryRacing =  $this->findHistoryByRacingName($racingName);
         $carRespository = $this->entityManager->getRepository(Car::class);
+        $racing = $this->findRacingName($racingName);
+
+        echo "\nCorrida: {$racing->getName()}" .
+            "\nStatus da Corrida: {$racing->isStatus()}\n\n";
 
         /**
          * @var HistoryRacing $historyRacing
@@ -39,28 +43,45 @@ class HistoryRacingRepository {
             $carOverpast = $carRespository->find($historyRacing->getCarOverpast());
 
             echo "\nPiloto {$carExceed->getNameDriver()} " .
-                "posição {$historyRacing->getPositionCarOverpast()}\n" .
+                "posição {$historyRacing->getPositionCarExceed()}\n" .
                 "Ultrapassou o piloto {$carOverpast->getNameDriver()} " .
                 "da posição " .
-                "{$historyRacing->getPositionCarExceed()} \n\n";
+                "{$historyRacing->getPositionCarOverpast()} \n\n";
+        }
+
+        $carsRegistered = $racing->getCarsOrderPosition();
+
+        /**
+         * @var Car $car
+         */
+        foreach ($carsRegistered AS $car) {
+            echo "\nPosição: {$car->getPosition()}\n" .
+                "Piloto: {$car->getNameDriver()}\n" .
+                "Cor: {$car->getColor()}\n" .
+                "Número: {$car->getNumber()}\n\n";
         }
     }
 
-    /** @return Racing */
-    public function findRacing(String $racingName): Racing {
+    private function findHistoryByRacingName(String $racingName) {
+        $racing = $this->findRacingName($racingName);
+
+        return $this->entityManager
+            ->getRepository(HistoryRacing::class)
+            ->findBy([ 'racing' => $racing->getId() ]);
+    }
+
+    private function findRacingName(String $racingName): Racing {
         return $this->entityManager
             ->getRepository(Racing::class)
             ->findOneBy([ 'name' => $racingName ]);
     }
 
-    /** @return Car */
-    public function findByNameDriver(String $carName): Car {
+    private function findByNameDriver(String $carName): Car {
         /** @var EntityRepository $carRepository */
         $carRepository = $this->entityManager->getRepository(Car::class);
         return $carRepository->findOneBy([ 'name_driver' => $carName ]);
     }
 
-    /** @return Car */
     public function findByPosition(String $carPosition): Car {
         $carRepository = $this->entityManager->getRepository(Car::class);
         return $carRepository->findOneBy([ 'position' => $carPosition ]);
@@ -71,15 +92,22 @@ class HistoryRacingRepository {
     }
 
     public function createHistory(String $racingName, String $carNameExceed, String $carNameOverpast): void {
-        $racing = $this->findRacing($racingName);
+        $racing = $this->findRacingName($racingName);
 
         if(!$racing->isStarted()){
             echo $this->message->racingNotStarted();
             exit;
         }
 
+        /**
+         * @var Car $carExceed
+         */
         $carExceed = $this->findByNameDriver($carNameExceed);
         $positionOverpast = $carExceed->getPosition() - 1;
+
+        /**
+         * @var Car $carOverpast
+        */
         $carOverpast = $this->findByNameDriver($carNameOverpast);
 
         if($this->isInvalidExceed($carExceed, $carOverpast)) {
@@ -103,5 +131,7 @@ class HistoryRacingRepository {
         $this->entityManager->persist($carOverpast);
 
         $this->entityManager->flush();
+
+        echo $this->message->exceedPilot($carExceed->getNameDriver(), $carOverpast->getNameDriver());
     }
 }

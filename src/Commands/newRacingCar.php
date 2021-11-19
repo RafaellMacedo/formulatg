@@ -13,7 +13,7 @@ $entityManager = $managerFactory->getManager();
 $racing = $entityManager->find(Racing::class, 1);
 $car = $entityManager->find(Car::class, 2);
 
-$listCar = $racing->getRacingCar();
+$listCar = $racing->getCars();
 
 /** $car Car */
 foreach ($listCar AS $car) {

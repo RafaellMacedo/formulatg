@@ -29,7 +29,12 @@ class listCommands {
     public function commandCarAction(): void {
         echo "\n> mostrarCarro\n" .
             "\n> removerCarro\n" .
-            "\n> posicaoCarro\n";
+            "\n> posicaoCarro\n" .
+            "\n\t**Passe as seguintes informações**\n\n" .
+            "\tnome da corrida usando aspas duplas \"\"\n" .
+            "\tnome do piloto usando aspas duplas \"\"\n" .
+            "\tposição\n\n" .
+            "\t***\n\n";
     }
 
     public function commandRacing(): void {
@@ -48,6 +53,7 @@ class listCommands {
             echo "> iniciarCorrida \n\n" .
             "> pausarCorrida \n\n" .
             "> ultrapassar\n\n" .
-            "> finalizarCorrida\n\n";
+            "> finalizarCorrida\n\n" .
+            "> historicoCorrida\n\n";
     }
 }
