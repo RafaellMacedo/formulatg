@@ -2,13 +2,13 @@
 
 Este é um projeto chamado Formula TG com o foco de atender os estudos de phpunit e docker.
 
-Para desenvolver este proejto, utilizei uma atividade conhecida por alguns devs, que é chamado de Formula TG, para saber mais clie no link
+Para desenvolver este projeto, utilizei uma atividade conhecida por alguns devs, que é chamado de Formula TG, para saber mais clique no link
 
 https://github.com/RafaellMacedo/formulatg/blob/master/formulatg.pdf
 
 Para iniciar o projeto será necessário ter instalado o docker na máquina.
 
-Se ainda não tem docker instalado, só clicar ai do lado, no icone que você será direcionado para o site de instalação do docker
+Se ainda não tem docker instalado, clique no ícone que você será direcionado para o site de instalação do docker
 
 <a href="https://docs.docker.com/engine/install/ubuntu/" target="_blank"><img src="https://img.icons8.com/color/48/000000/docker.png"/></a>
 
@@ -16,7 +16,7 @@ Beleza, instalado o docker e clonado o repositório, agora é hora de criar os c
 
 <pre>docker-compose up -d</pre>
 
-Pronto, agora você tem os containers iniciados, caso queira confirmar se esta online o container, rode o comando
+Pronto, agora você tem os containers iniciados, para confirmar se está online o container, rode o comando
 
 <pre>docker ps</pre>
 
@@ -24,17 +24,17 @@ Agora vamos acessar o container, para acessa-lo rode o comando
 
 <pre>docker exec -it formulatg_php_1 bash</pre>
 
+Para verificar se as Entities estão corretas, sem nenhum erro antes de criar o banco de dados, roder o comando do doctrine.
+
+<pre>vendor/bin/doctrine orm:info</pre>
+
 Dentro do container, vamos rodar o comando de criação do banco de dados que foi implementado usando o doctrine.
 
 <pre>vendor/bin/doctrine orm:schema-tool:create</pre>
 
-Para saber se esta tudo certo, sem nenhum erro com as Entities que foi desenvolvido neste projeto, só rodar o comando do doctrine.
+### Pronto, agora o projeto esta configurado em sua máquina para você executar os comandos.
 
-<pre>vendor/bin/doctrine orm:info</pre>
-
-###Pronto, agora o projeto esta configurado em sua máquina para você executar os comandos.
-
-O arquivo comando.php que esta localizado na raiz do projeto, é o responsável por fazer a leitura que você esta digitando em seu terminal, identificar qual comando deseja executar.
+O arquivo comando.php que está localizado na raiz do projeto, é o responsável por fazer a leitura do que foi digitado no terminal e identificar qual comando será executado no projeto.
 
 ### Obs.: Para rodar os comandos do projeto, você precisará estar dentro do container formulatg_php_1
 
